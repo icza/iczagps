@@ -1,0 +1,453 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial;
+	font-size: 100%;
+}
+
+#container {
+	width: 100%;
+	margin: 0px;
+	background: #fff;
+	margin: 0px;
+}
+
+a {
+	color: #22c;
+}
+
+a:hover {
+	color: #55c;
+}
+
+/*================================================================================================*/
+/*====  H E A D E R  =============================================================================*/
+/*================================================================================================*/
+#header {
+	padding: 10px;
+	background: #ccc;
+	height: 36px;
+}
+
+#header-title {
+	float: left;
+}
+
+#header-title h1 {
+	margin: 0px;
+	float: left;
+}
+
+#header-title h1 a {
+	color: #55a;
+	text-decoration: none;
+}
+
+#header-title h1 a:hover {
+	color: #77c;
+}
+
+#header-userinfo {
+	float: right;
+	font-size: 0.8em;
+}
+
+#header-userinfo a {
+	float: right;
+	clear: right;
+	text-decoration: none;
+}
+
+/*================================================================================================*/
+/*====  N A V I G A T I O N  =====================================================================*/
+/*================================================================================================*/
+#navigation {
+	width: 100%;
+	float: left;
+	background: #333;
+}
+
+#navigation {
+	background: #333;
+}
+
+#navigation ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+#navigation li {
+	display: inline;
+	list-style-type: none;
+}
+
+#navigation li a {
+	display: block;
+	float: left;
+	text-decoration: none;
+	color: #fff;
+	padding: 5px 10px;
+	border-right: 1px solid #fff;
+}
+
+#navigation li a.selected {
+	background: #383;
+}
+
+#navigation li a:hover {
+	background: #44a;
+}
+
+#navigation li a:hover.selected {
+	background: #4a4;
+}
+
+/*================================================================================================*/
+/*====  C O N T E N T  ===========================================================================*/
+/*================================================================================================*/
+#content {
+	clear: both;
+	padding: 10px;
+}
+
+h2, h3, h4 {
+	margin: 0px;
+}
+
+#content h2 {
+	font-size: 1.6em;
+}
+
+#content h3 {
+	margin-top: 5px;
+	font-size: 1.3em;
+}
+
+#content h4 {
+	margin-top: 10px;
+	font-size: 1.05em;
+}
+
+#content h2.error {
+	color: red;
+	font-style: italic;
+}
+
+div.note, div.info, div.important, div.warning, div.error {
+	margin-top: 8px;
+	padding: 4px 0px 4px 10px;
+	border-left: 7px solid;
+	padding: 4px 0px 4px 10px;
+}
+
+div.note {
+	border-left-color: #999;
+	background: #eee;
+}
+
+div.info {
+	border-left-color: #40aa40;
+	background: #cfc;
+}
+
+div.important {
+	border-left-color: #36c;
+	background: #e0e7ff;
+}
+
+div.warning {
+	border-left-color: #e8e000;
+	background: #f5f5d0;
+}
+
+div.error {
+	border-left-color: #b03;
+	background: #fcc;
+}
+
+.highlight {
+	padding-left: 2px;
+	padding-right: 2px;
+	background: #ee0;
+}
+
+.code {
+	font-family: Courier;
+	white-space: pre-wrap;
+}
+
+.datePart {
+	color: #888;
+	font-style: italic;
+}
+
+.hidden {
+	display: none;
+}
+
+.infoIcon {
+	padding: 0px 6px 1px 5px;
+	color: #fff;
+	background-color: #6060ff;
+	font-family: Times;
+	font-style: italic;
+	font-weight: bold;
+	cursor: default;
+	border-radius: 10px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+th, th span.note {
+	background-color: #d80;
+	color: white;
+}
+
+th, td {
+	padding: 2px;
+}
+
+tr {
+	background: white;
+}
+
+tr.alt {
+	background-color: #fec;
+}
+
+tr.highlight {
+	background-color: #ccf;
+}
+
+.true, .false {
+	text-align: center;
+}
+
+.true {
+	font-weight: bold;
+	color: green;
+}
+
+.false {
+	color: red;
+}
+
+form ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+form ul li {
+	display: block;
+	list-style-type: none;
+	clear: left;
+}
+
+form ul label {
+	margin-top: 4px;
+	float: left;
+}
+
+form input[type="text"], form select {
+	width: 160px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+input[readonly] {
+	background-color: #ddf;
+}
+
+span.note {
+	color: #888;
+	font-size: 0.8em;
+}
+
+fieldset {
+	padding-top: 3px;
+	padding-bottom: 7px;
+}
+
+/*================================================================================================*/
+/*====  H O M E   P A G E  =======================================================================*/
+/*================================================================================================*/
+#sysOverview {
+	border: 1px solid #aaa;
+	padding: 5px;
+	background-color: #eee;
+	white-space: pre;
+}
+
+/*================================================================================================*/
+/*====  R E G I S T E R   P A G E  ===============================================================*/
+/*================================================================================================*/
+#regForm ul label {
+	width: 130px;
+}
+
+#regForm input {
+	width: 200px;
+}
+
+#termsAndPolicyLI {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#termsAndPolicyLabel {
+	width: auto !important;
+	margin-top: 1px !important;
+}
+
+#acceptTermsAndPolicyId {
+	width: 20px !important;
+}
+
+/*================================================================================================*/
+/*====  D E V I C E S   P A G E  =================================================================*/
+/*================================================================================================*/
+#newDevForm ul label {
+	width: 133px;
+}
+
+#newDevForm input[type="checkbox"] {
+	margin: 8px 147px 5px 0px;
+}
+
+/*================================================================================================*/
+/*====  L O G S   P A G E  =======================================================================*/
+/*================================================================================================*/
+#deviceSelector {
+	padding: 12px 0px 5px 0px;
+}
+
+#filters {
+	padding: 5px 0px 5px 0px;
+}
+
+#filters ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+#filters ul li {
+	display: block;
+	list-style-type: none;
+	clear: left;
+}
+
+#filters ul label {
+	margin-top: 5px;
+	float: left;
+	width: 115px;
+}
+
+#filters input[type="text"] {
+	width: 180px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+#filters a {
+	padding-left: 18px
+}
+
+#paging {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #ddf;
+}
+
+#pagingForm {
+	margin: 0px;
+	margin-left: 4px;
+}
+
+#pagingForm select {
+	width: auto;
+}
+
+#submitPrevPageId, #submitNextPageId, #submitFirstPageId, #refresh {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#submitPrevPageId {
+	margin-left: 20px;
+}
+
+#submitNextPageId {
+	margin-right: 20px;
+}
+
+#logsTip {
+	padding-left: 20px;
+}
+
+.EvtTrack {
+	font-size: 0.7em;
+}
+
+.EvtStart, .EvtStop, .EvtStart a, .EvtStop a {
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+.EvtStart {
+	background-color: #3a1;
+}
+
+.EvtStop {
+	background-color: #e22;
+}
+
+#logsTable {
+	float: left;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+}
+
+#mapPreview {
+	float: left;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+/*================================================================================================*/
+/*====  A L E R T S   P A G E  =================================================================*/
+/*================================================================================================*/
+#newAlertForm ul label {
+	width: 220px;
+}
+
+/*================================================================================================*/
+/*====  S E T T I N G S   P A G E  ===============================================================*/
+/*================================================================================================*/
+#settingsForm ul label {
+	width: 190px;
+}
+
+/*================================================================================================*/
+/*====  F O O T E R  =============================================================================*/
+/*================================================================================================*/
+#footer {
+	clear: both;
+	padding: 6px 10px 6px 10px;
+	background: #ccc;
+	border-top: 1px solid #888;
+	font-style: italic;
+	font-size: 0.8em;
+	font-style: italic;
+	padding: 6px 10px 6px 10px;
+	padding: 6px 10px 6px 10px;
+}

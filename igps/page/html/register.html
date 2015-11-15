@@ -1,0 +1,45 @@
+{{template "header.html" .}}
+
+{{if .Custom.Created}}
+    <div class="info">
+        Your IczaGPS Account has been successfully created.<br/>
+        Continue to the {{.NamePageMap.Settings.Link}} page to customize the site.
+    </div>
+{{else if .LoginURL}}
+	<div class="warning">In order to register, first you need to <a href="{{.LoginURL}}">Login</a>.</div>
+{{else if .Account}}
+	<div class="info">You already have an IczaGPS Account. Continue to the {{.NamePageMap.Home.Link}} page.</div>
+{{else}}
+
+	<p>Register an IczaGPS Account by submitting the following form:</p>
+
+	<form id="regForm" action="{{.Page.Path}}" method="POST">
+		<fieldset>
+			<legend>Registration info</legend>
+			<ul>
+				<li>
+					<label for="googleAccountId">Google Account:</label>
+					<input type="text" id="googleAccountId" name="googleAccount" value="{{.Custom.GoogleAccount}}" readonly />
+					<span class="note">This is the Google Account you're currently signed in with. <a href="{{.LogoutURL}}">Logout</a> if you want to change it.</span>
+				</li>
+				<li>
+					<label for="contactEmailId">Contact Email:</label>
+					<input type="text" id="contactEmailId" name="contactEmail" value="{{.Custom.ContactEmail}}" />
+					<span class="note">Optional. Provide if you want to receive emails <b>both</b> to your Google Account and to this.</span>
+				</li>
+				<li id="termsAndPolicyLI">
+					<label id="termsAndPolicyLabel" for="acceptTermsAndPolicyId">
+						I have read and I accept the <a href="{{.NamePageMap.TermsAndPolicy.Path}}" target="_blank">Terms of Service and Privacy Policy</a>:
+					</label>
+					<input type="checkbox" id="acceptTermsAndPolicyId" name="acceptTermsAndPolicy" {{with .Custom.AcceptTermsAndPolicy}}checked="on"{{end}} />
+				</li>
+				<li>
+					<input type="submit" id="submitRegisterId" name="submitRegister" value="Register" />
+				</li>
+			</ul>
+		</fieldset>
+	</form>
+
+{{end}}
+
+{{template "footer.html" .}}

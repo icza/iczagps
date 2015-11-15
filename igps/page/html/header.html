@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta charset="utf-8" /> <!-- HTML5 -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"> <!-- HTML4 -->
+	<meta name="description" content="IczaGPS&#8482; GPS Tracker, GPS Tracking, Location, Map, Geo point, Earth" />
+	<meta name="keywords" content="GPS, tracker, tracking, location, map, geo point, earth" />
+	
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4884955-34', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	
+	<link rel="stylesheet" type="text/css" href="/static/iczagps.css?v=0.1" />
+	<link rel="shortcut icon" href="/static/favicon.ico?v=0.1" />
+	<script src="/static/iczagps.js?v=0.1"></script>
+	
+	<title>{{.Page.Title}} - IczaGPS&#8482;</title>
+</head>
+
+<body {{if .Mobile}}{{with .Account.MobPageWidth}}style="width:{{.}}px"{{end}}{{end}}>
+	<div id="container">
+		<div id="header">
+			<div id="header-title">
+				<h1><a href="/">IczaGPS&#8482;</a></h1>
+			</div>  <!-- #header-title -->
+			<div id="header-userinfo">
+				{{if .User}}
+					<a href="{{.LogoutURL}}">Logout {{.User}}</a>
+				{{else}}
+					<a href="{{.LoginURL}}">Login</a>
+				{{end}}
+			</div>  <!-- #header-userinfo -->
+		</div>  <!-- #header -->
+
+		<div id="navigation">
+			<ul>
+				{{range .Pages}}
+					{{if .Visible}}
+						<li><a href="{{.Path}}" {{if eq .Name $.Page.Name}}class="selected"{{end}}>{{.Title}}</a></li>
+					{{end}}
+				{{end}}
+				<li>{{if .User}}<a href="{{.LogoutURL}}">Logout</a> {{else}} <a href="{{.LoginURL}}">Login</a>{{end}}</li>
+			</ul>
+		</div>  <!-- #navigation -->
+
+		<div id="content">
+			<h2{{if .Page.Error}} class="error"{{end}}>{{.Page.Title}}</h2>
+
+			{{with .InfoMsg}}
+				<div class="info">{{.}}</div>
+			{{end}}
+			{{with .ErrorMsg}}
+				<div class="error">{{.}}</div>
+			{{end}}
+			{{with .ImportantMsg}}
+				<div class="important">{{.}}</div>
+			{{end}}
+
+			<!-- page content and footer will follow -->

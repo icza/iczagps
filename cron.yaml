@@ -1,0 +1,5 @@
+cron:
+- description: Check potential car hijacking and send email alerts.
+  url: /cron/alert
+  schedule: every 5 minutes synchronized
+  

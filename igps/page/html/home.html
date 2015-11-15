@@ -1,0 +1,42 @@
+{{template "header.html" .}}
+
+<p>Welcome to the IczaGPS&#8482;!</p>
+
+<p>
+	IczaGPS&#8482; is a GPS tracking system that can be used to track different GPS devices.<br/>
+	Devices automatically report their positions (geographical locations) to the IczaGPS&#8482; Server using a very simple HTTP(S) protocol.<br/>
+	It provides a web interface that is viewable from all devices (desktop computers, smart phones, tablets etc.).<br/>
+	The web interface uses Google Accounts for authenticating users (you never have to provide any passwords to the IczaGPS&#8482; Server!).<br/>
+</p>
+
+<div id="sysOverview" class="code">                  System Overview:
+                      _______                ____
+    __|              [       ]              |___x\____
+   |■■|_____________\[ HTTPS ]_____________\|         |
+   |__|   Report    /[       ]    View     /|         |
+                     [_______]              |_________|
+GPS Devices          IczaGPS&#8482;                Browsers
+ (Mobiles)            Server           (Desktop/Mobile/Tablet)
+</div>
+
+<p>
+    Once you logged in, you can create Devices on the {{.NamePageMap.Devices.Link}} page.<br/>
+    A Device may represent any GPS device, for example your personal mobile phone or a smart phone placed in your car you want to track.<br/>
+    You have to install an application on your Devices which will be responsible for reporting the GPS coordinates.<br/>
+    Each Device gets a unique, secret key which you have to enter in your client app which identifies your GPS Device to the IczaGPS&#8482; Server.<br/> 
+</p>
+
+<p>
+    Once a Device has been setup and the client application is running on the Device, you can view reported GPS records on the {{.NamePageMap.Logs.Link}} page.<br/>
+    You can view the records, you can filter / search them by time and by location (if the Device is indexed).<br/>
+    You can also visualize the device's location and movement paths on Google Maps (static images, embedded maps or separate tab).<br/>
+    The Logs table also shows you some interesting / useful data about your device such as its movement speed.<br/>
+</p>
+
+<p>
+    You can also have IczaGPS&#8482; Server monitor your Devices and send Alerts when something suspicious happens to your Devices.<br/>
+    On the {{.NamePageMap.Alerts.Link}} page you can create Alerts for your Devices, and if a Device stops sending location reports for a specific amount of time, you will be notified via email.<br/>
+    You can even pair 2 devices: a Car GPS Device and a Personal Mobile, and by doing so you will also be notified if your car is moving without you (e.g. someone hijacked your car)!<br/>
+</p>
+
+{{template "footer.html" .}}

@@ -1,0 +1,17 @@
+{{template "header.html" .}}
+
+<div class="error">
+	The Page you requested requires an IczaGPS Account.<br/>
+	You are logged in as <span class="highlight">{{.User}}</span> but you have no associated IczaGPS Account.<br/>
+	<br/>
+	If you do not have an IczaGPS Account yet, you can create one on the {{.NamePageMap.Register.Link}} page.
+</div>
+
+<p>You may do the following:</p>
+
+<ul>
+	<li>If you already have an IczaGPS Account, you can first <a href="{{.LogoutURL}}">Logout</a> and then login with the appropriate Google Account.</li>
+	<li>You can create your IczaGPS Account on the {{.NamePageMap.Register.Link}} page.</li>
+</ul>
+
+{{template "footer.html" .}}

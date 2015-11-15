@@ -1,0 +1,212 @@
+{{template "header.html" .}}
+
+{{if .Custom.Devices}}
+
+    <div id="deviceSelector">
+        Please select a Device:
+        <select id="deviceListId" onchange="selDevChanged(); refresh();">
+            <option value=""></option>
+            {{range .Custom.Devices}}
+                <option value="{{.KeyID}}" {{if $.Custom.Device}}{{if eq .KeyID $.Custom.Device.KeyID}}selected{{end}}{{end}}>{{.Name}}</option>
+            {{end}}
+        </select>
+        <script>
+            var devID;
+            function selDevChanged() {
+                var s = document.getElementById("deviceListId");
+                devID = s.options[s.selectedIndex].value;
+            }
+            selDevChanged(); // Init var
+        </script>
+        {{with .Custom.Device}}
+            <span class="note">Search Precision: {{.SearchPrecisionString}}, Logs Retention: {{.LogsRetentionString}}</span>
+        {{end}}
+    </div> <!-- #deviceSelector -->
+    <div id="filters">
+        <fieldset>
+            <legend>Filters:</legend>
+            <ul>
+                <li>
+		            <label for="timeBeforeId">Time &#8804; <span class="note">(before)</span>:</label>
+		            <input id="timeBeforeId" type="text" value="{{.Custom.Before}}" />
+		            <span class="infoIcon" title="Format: &#34;yy-MM-dd HH:mm:ss&#34;. Only records with time earlier than this will be listed.">i</span>
+	                <a href="javascript:void(0);" onclick="applyAndRefresh();">Apply</a>
+	                <a href="javascript:void(0);" onclick="clearAndRefresh();">Clear</a>
+	            </li>
+                <li>
+		            <label for="timeAfterId">Time &#8805; <span class="note">(after)</span>:</label>
+		            <input id="timeAfterId" type="text" value="{{.Custom.After}}" />
+		            <span class="infoIcon" title="Format: &#34;yyyy-MM-dd HH:mm:ss&#34;. Only records with time later than this will be listed.">i</span>
+		            <span class="note">E.g. <span class="code">"{{.FormatDateTime Now}}"</span></span>
+                </li>
+                <li>
+		            <label for="searchLocId">Location:</label>
+		            <input id="searchLocId" type="text" value="{{.Custom.SearchLoc}}" {{with not .Custom.Device.Indexed}}readonly{{end}} />
+		            <span class="infoIcon" title="Format: &#34;latitude,longitude&#34;. Only records close to this location will be listed. Can only be used with indexed Devices. See description on the Devices page.">i</span>
+		            <span class="note">E.g. <span class="code">"12.345678,21.876543"</span></span>
+                </li>
+            </ul>
+        </fieldset>
+        <script>
+	        var timeBeforeTag = document.getElementById("timeBeforeId");
+            var timeAfterTag = document.getElementById("timeAfterId");
+            var searchLocTag = document.getElementById("searchLocId");
+            registerEnter(timeBeforeTag, applyAndRefresh);
+            registerEnter(timeAfterTag, applyAndRefresh);
+            registerEnter(searchLocTag, applyAndRefresh);
+	        var timeBefore, timeAfter, searchLoc;
+	        function clearAndRefresh() {
+	        	timeBeforeTag.value = "";
+                timeAfterTag.value = "";
+                searchLocTag.value = "";
+	        	applyAndRefresh();
+	        }
+	        function applyFilters() {
+                timeBefore = timeBeforeTag.value;
+                timeAfter = timeAfterTag.value;
+                searchLoc = searchLocTag.value;
+	        }
+	        function applyAndRefresh() {
+	            applyFilters();
+	            refresh();
+	        }
+	        applyFilters();  // Init vars
+	        
+            function refresh() {
+                window.location = getURL();
+            }
+	        
+	        function getURL() {
+                var s = "";
+                if (devID != "") {
+                    s += "devID=" + devID;
+                }
+                if (timeBefore != "") {
+                    s += s == "" ? "" : "&";
+                    s += "before=" + encodeURIComponent(timeBefore);
+                }
+                if (timeAfter != "") {
+                    s += s == "" ? "" : "&";
+                    s += "after=" + encodeURIComponent(timeAfter);
+                }
+                if (searchLoc != "") {
+                    s += s == "" ? "" : "&";
+                    s += "loc=" + encodeURIComponent(searchLoc);
+                }
+               	return "{{$.Page.Path}}" + (s == "" ? "" : "?" + s);
+	        }
+        </script>
+    </div> <!-- #filters -->
+	
+    {{if .Custom.PrintNoRecordsForDev}}
+        <div class="warning">
+            There are no GPS records for the selected Device.<br/>
+            Please make sure the client tracking application is installed and running, and the server URL is correct.<br/>
+            Go to the {{.NamePageMap.Devices.Link}} page to check the server URL.
+        </div>
+    {{else if .Custom.PrintNoMatchForFilters}}
+            <div class="warning">
+                There are no GPS records for the selected Device that match the specified filters.
+            </div>
+    {{else if .Custom.Device}}
+        <div id="paging">
+            <form id="pagingForm" method="POST">
+                <input type="hidden" id="cursorsId" name="cursors" value="{{.Custom.Cursors}}"/>
+                <input type="hidden" id="pageSizeId" name="pageSize" value="{{.Custom.PageSize}}"/>
+                <input type="submit" id="submitFirstPageId" name="submitFirstPage" value="&#60;&#60;" title="First page" />
+                <input type="submit" id="submitPrevPageId" name="submitPrevPage" value="&#60;" title="Previous page" />
+                Page:
+                <select id="pageListId" name="page" onchange="this.form.submit()">
+                    {{$selectedPage := .Custom.Page}}
+                    {{range $idx, $val := .Custom.CursorList}}
+                        {{$page := Add $idx 1}}
+                        <option value="{{$page}}" {{if $selectedPage}}{{if eq $page $selectedPage}}selected{{end}}{{end}}>{{$page}}</option>
+                    {{end}}
+                </select>
+                <input type="submit" id="submitNextPageId" name="submitNextPage" value="&#62;" title="Next page" {{if .Custom.EndOfList}}disabled{{end}}/>
+                <input type="submit" id="submitRefreshId" name="submitRefresh" value="Refresh" title="Refresh current page" />
+                <span id="logsTip" class="note">Tip: You can change the page and the map sizes on the {{.NamePageMap.Settings.Link}} page.</span> 
+            </form>
+        </div> <!-- #paging -->
+	    {{if .Custom.Records}}
+	        <table id="logsTable">
+	            <tr>
+	                <th>&#160;#&#160;</th>
+	                <th>Ago</th>
+	                <th>Time &#8595;</th>
+                    <th>Location</th>
+                    <th>&#916;d<span class="note"><sub>[m]</sub></span></th>
+                    <th>&#916;t<span class="note"><sub>[s]</sub></span></th>
+                    <th>v<span class="note"><sub>[km/h]</sub></span></th>
+	                <th>Map <a href="javascript:void(0);" onclick="javascript: allImgPrev();" title="Show all locations of this page on a static map image">ALL</a></th>
+	            </tr>
+	            {{$offset := .Custom.RecordOffset}}
+	            {{range $i, $r := .Custom.Records}}
+	                <tr {{if Odd $i}}class="alt"{{end}} align="right">
+	                    <td>{{Add $i $offset}}</td>
+	                    <td>{{$r.Ago}}</td>
+	                    <td>{{$.FormatDateTime $r.Created}}</td>
+                        <td class="evt{{$r.Evt}}">{{if $r.Track}}{{$r.GeoPoint.Lat}},{{$r.GeoPoint.Lng}}{{else}}
+	                        <a href="javascript:void(0);" onclick="javascript: linkStartStop('{{$r.Evt}}','{{$.FormatDateTime $r.Created}}')">{{$r.Evt}}</a>{{end}}</td>
+                        <td>{{if $r.Metrics}}{{$r.Dd}}{{end}}</td>
+                        <td>{{if $r.Metrics}}{{$r.DtString}}{{end}}</td>
+                        <td>{{if $r.Metrics}}{{$r.V}}{{end}}</td>
+	                    <td>
+	                        {{if $r.Track}}
+	                            <span class="code">{{printf "%c" $r.Label}}</span>
+	                            <a title="Show location on a static map image" href="javascript:void(0);"
+	                                onclick="javascript: imgPrev(this, {{$r.GeoPoint.Lat}}, {{$r.GeoPoint.Lng}});">Img</a>
+	                            <a title="Show location in an embedded, interactive map" href="javascript:void(0);"
+	                                onclick="javascript: embPrev(this, {{$r.GeoPoint.Lat}}, {{$r.GeoPoint.Lng}});">Emb</a>
+	                            <a title="Show location on a new tab in Google Maps" href="javascript:void(0);"
+	                                onclick="javascript: newTab({{$r.GeoPoint.Lat}}, {{$r.GeoPoint.Lng}});">Tab</a>
+	                        {{end}}
+	                    </td>
+	                </tr>
+	            {{end}}
+	        </table>
+	        <div id="mapPreview"></div>
+	        <script>
+	            var mapPrevTag = document.getElementById("mapPreview");
+	            function linkStartStop(evt, timestamp) {
+	            	if (evt == "Start")
+                        timeAfterTag.value = htmlToText(timestamp);
+	            	else if (evt == "Stop")
+                        timeBeforeTag.value = htmlToText(timestamp);
+	            	applyAndRefresh();
+	            }
+                function allImgPrev() {
+                    highlightRow(null); // Clear currently highlighted row (if any)
+                    mapPrevTag.innerHTML =
+                        "<img width='{{.Custom.MapWidth}}' height='{{.Custom.MapHeight}}' src='https://maps.googleapis.com/maps/api/staticmap?size={{.Custom.MapWidth}}x{{.Custom.MapHeight}}{{with .Custom.MapImgFormat}}&format={{.}}{{end}}&key={{.Custom.APIKey}}{{.Custom.AllMarkers}}'>";
+                }
+	            function imgPrev(el, lat, lon) {
+	                highlightRow(el);
+	                mapPrevTag.innerHTML =
+	                    "<img width='{{.Custom.MapWidth}}' height='{{.Custom.MapHeight}}' src='https://maps.googleapis.com/maps/api/staticmap?zoom=16&center=" +
+	                        lat + "," + lon + "&size={{.Custom.MapWidth}}x{{.Custom.MapHeight}}{{with .Custom.MapImgFormat}}&format={{.}}{{end}}&key={{.Custom.APIKey}}{{.Custom.AllMarkers}}'>";
+	            }
+	            function embPrev(el, lat, lon) {
+	                highlightRow(el);
+	                mapPrevTag.innerHTML =
+	                    "<iframe width='{{.Custom.MapWidth}}' height='{{.Custom.MapHeight}}' frameborder='0' style='border:0' src='https://www.google.com/maps/embed/v1/place?q=" +
+	                        lat + "," + lon + "&key={{.Custom.APIKey}}'></iframe>";
+	            }
+	            function newTab(lat, lon) {
+	                window.open("https://www.google.com/maps?q=" + lat + "," + lon, "_blank");
+	            }
+	        </script>
+	    {{else}}
+            <div class="warning">
+                There are no more GPS records to display on this page (you reached the end of the list).
+            </div>
+	    {{end}}
+    {{end}}
+	
+{{else}}
+	<div class="warning">
+		You do not have any Devices. Please head over to the {{.NamePageMap.Devices.Link}} page to add Devices.
+	</div>
+{{end}}
+
+{{template "footer.html" .}}

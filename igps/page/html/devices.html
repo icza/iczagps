@@ -1,0 +1,119 @@
+{{template "header.html" .}}
+
+{{if .Custom.Devices}}
+	<h3>View and Manage Your Devices</h3>
+	<table>
+		<tr>
+			<th>&#160;#&#160;</th>
+            <th>Name &#8593;</th>
+            <th>Search<br/>Precision</th>
+            <th>Logs<br/>Retention</th>
+			<th>Logs</th>
+			<th>URL for the client app</th>
+			<th>Actions</th>
+		</tr>
+		{{range $i, $d := .Custom.Devices}}
+			<tr {{if Odd $i}}class="alt"{{end}} align="right">
+				<td>{{Add $i 1}}</td>
+                <td align="left">{{$d.Name}}</td>
+                <td>{{$d.SearchPrecisionString}}</td>
+                <td>{{$d.LogsRetentionString}}</td>
+				<td align="left"><a href="{{$.NamePageMap.Logs.Path}}?devID={{$d.KeyID}}" title="View Device Logs">Logs</a></td>
+				<td class="code">https://iczagps.appspot.com/gps?dev={{$d.RandID}}</td>
+				<td align="left">
+                    <a href="javascript:void(0);" onclick="rename({{$d.KeyID}},'{{$d.Name}}')" title="Rename Device">Rename</a>
+                    <a href="javascript:void(0);" onclick="genNewKey({{$d.KeyID}})" title="Generate New Device Key">New-key</a>
+			    </td>
+			</tr>
+		{{end}}
+	</table>
+	<script>
+    function rename(id, name) {
+        var newName = window.prompt("Enter new name for Device:", name);
+        if (newName != null) {
+            var f = document.getElementById("renameDevForm");
+            f["devID"].value = id;
+            f["name"].value = newName;
+            f.submit();
+        }
+    }
+    function genNewKey(id) {
+    	var answer = window.prompt("If Key is changed, you have to update the URL in the client app.\nPlease type 'go' to generate a new Device Key.", "");
+        if (answer == null)
+        	return;
+        if (answer != "go") {
+        	alert("New Key WILL NOT be generated\nYou have to type 'go' if you want to generate a New Key.");
+        	return;
+        }
+        if (answer == "go") {
+            var f = document.getElementById("genNewKeyForm");
+            f["devID"].value = id;
+            f.submit();
+        }
+    }
+	</script>
+{{else}}
+	<div class="warning">You do not have any Devices. You can add a new Device below.</div>
+{{end}}
+
+<br />
+<h3>Add a New Device</h3>
+
+<form id="newDevForm" action="{{.Page.Path}}" method="POST">
+	<fieldset>
+		<legend>New Device</legend>
+		<ul>
+			<li>
+				<label for="nameId">Name:</label>
+				<input type="text" id="nameId" name="name" value="{{.Custom.Name}}" />
+				<span class="note">Name of your device, e.g. "My phone" or "My car"</span>
+			</li>
+            <li>
+                <label for="searchPrecisionId">Search Precision:</label>
+                <input type="text" id="searchPrecisionId" name="searchPrecision" value="{{.Custom.SearchPrecision}}" />
+                meters.
+                <span class="note">
+                    Precision of location searches, see description below. 0 means not indexed (not searchable). THIS CANNOT BE CHANGED LATER!
+                    Usually personal mobiles should be searchable, car GPS devices should be not.
+                </span>
+            </li>
+            <li>
+                <label for="logsRetentionId">Logs Retention:</label>
+                <input type="text" id="logsRetentionId" name="logsRetention" value="{{.Custom.LogsRetention}}" />
+                days.
+                <span class="note">
+                    GPS Log records retention. 0 means keep logs forever (do not delete them).
+                    Any record beyond this age may be deleted at any time.
+                </span>
+            </li>
+			<li>
+				<input type="submit" id="submitAddId" name="submitAdd" value="Add" />
+			</li>
+		</ul>
+	</fieldset>
+</form>
+
+<h3>Location Search Contract</h3>
+<p>
+    The Search Precision means that when specifying a Location filter:
+</p>
+ <ol>
+     <li>All records <b>will be</b> included within the radius of <span class="code">[search precision]</span>.</li>
+     <li>Some records <b>may be</b> included within the radius of <span class="code">[3.83*search precision]</span>.</li>
+     <li>Records <b>will not be</b> included beyond the radius of <span class="code">[3.83*search precision]</span>.</li>
+ </ol>
+
+<!-- Hidden forms submitted by Javascript: -->
+
+<form id="renameDevForm" action="{{.Page.Path}}" method="POST" class="hidden">
+    <input type="hidden" id="renDevIDId" name="devID" />
+	<input type="hidden" id="renNameId" name="name" />
+	<input type="hidden" id="submitRenameId" name="submitRename" value="Rename" />
+</form>
+
+<form id="genNewKeyForm" action="{{.Page.Path}}" method="POST" class="hidden">
+    <input type="hidden" id="genNewKeyDevIDId" name="devID" />
+    <input type="hidden" id="submitGenNewKeyId" name="submitGenNewKey" value="GenNewKey" />
+</form>
+
+{{template "footer.html" .}}

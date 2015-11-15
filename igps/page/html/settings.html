@@ -1,0 +1,62 @@
+{{template "header.html" .}}
+
+<p>You can view and change your settings here.</p>
+
+<form id="settingsForm" action="{{.Page.Path}}" method="POST">
+    <fieldset>
+        <legend>Account Settings</legend>
+        <ul>
+            <li>
+                <label for="googleAccountId">Google Account:</label>
+                <input type="text" id="googleAccountId" name="googleAccount" value="{{.Custom.GoogleAccount}}" readonly />
+                <span class="note">You cannot change your Google Account</span>
+            </li>
+            <li>
+                <label for="contactEmailId">Contact Email:</label>
+                <input type="text" id="contactEmailId" name="contactEmail" value="{{.Custom.ContactEmail}}" />
+                <span class="note">Optional. Provide if you want to receive emails <b>both</b> to your Google Account and to this.</span>
+            </li>
+            <li>
+                <label for="locationNameId">Location/Time Zone:</label>
+                <input type="text" id="locationNameId" name="locationName" value="{{.Custom.LocationName}}" />
+                <span class="note">Default: <span class="code">"UTC"</span>. Your location or time zone to be used. Examples: <span class="code">"EST"</span>, <span class="code">"Europe/Budapest"</span>, <span class="code">"America/New_York"</span></span>
+            </li>
+            <li>
+                <label for="logsPageSizeId">Logs Table Page Size:</label>
+                <input type="text" id="logsPageSizeId" name="logsPageSize" value="{{.Custom.LogsPageSize}}" />
+                <span class="note">Default: <span class="code">15</span>. Number of Log records displayed in a page. Valid range: <span class="code">5..30</span></span>
+            </li>
+            <li>
+                <label for="mapPrevSizeId">Map preview Size:</label>
+                <input type="text" id="mapPrevSizeId" name="mapPrevSize" value="{{.Custom.MapPrevSize}}" />
+                <span class="note">Default: <span class="code">"500x500"</span>. Format: <span class="code">"width<b>x</b>height"</span>.</span>
+            </li>
+            <li>
+                <label for="mobMapPrevSizeId">Mobile Map preview Size:</label>
+                <input type="text" id="mobMapPrevSizeId" name="mobMapPrevSize" value="{{.Custom.MobMapPrevSize}}" />
+                <span class="note">Default: <span class="code">"500x500"</span>. For mobile phones.</span>
+            </li>
+            <li>
+                <label for="mobMapImgFormatId">Mobile Map image format:</label>
+		        <select id="mobMapImgFormatId" name="mobMapImgFormat">
+		            <option value=""></option>
+		            {{range .Custom.ImgFormats}}
+		                <option value="{{.}}" {{if $.Custom.MobMapImgFormat}}{{if eq . $.Custom.MobMapImgFormat}}selected{{end}}{{end}}>{{.}}</option>
+		            {{end}}
+		        </select>
+                <span class="note">Default: <span class="code">jpg</span>. For mobile phones. <span class="code">jpg</span> provides smaller image size than <span class="code">png</span> with slightly worse quality.</span>
+            </li>
+            <li>
+                <label for="mobPageWidthId">Mobile Page width:</label>
+                <input type="text" id="mobPageWidthId" name="mobPageWidth" value="{{.Custom.MobPageWidth}}" />
+                pixel.
+                <span class="note">Default: empty which means use full width. Valid range: <span class="code">400..10000</span></span>
+            </li>
+            <li>
+                <input type="submit" id="submitSettingsId" name="submitSettings" value="Save" />
+            </li>
+        </ul>
+    </fieldset>
+</form>
+
+{{template "footer.html" .}}

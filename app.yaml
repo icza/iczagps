@@ -1,0 +1,17 @@
+application: iczagps
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /static
+  static_dir: static
+
+- url: /.*
+  script: _go_app
+  secure: always
+
+- url: /cron/alert
+  script: _go_app
+  secure: always
+  login: admin

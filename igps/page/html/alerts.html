@@ -1,0 +1,87 @@
+{{template "header.html" .}}
+
+{{if .Custom.Devices}}
+
+	{{if .Custom.Alerts}}
+	    <h3>View and Manage Your Alerts</h3>
+	    <br/>
+	    <table>
+	        <tr>
+	            <th>&#160;#&#160;</th>
+	            <th>Car GPS Device</th>
+	            <th>Personal Mobile GPS Device</th>
+	            <th>Actions</th>
+	        </tr>
+	        {{range $i, $a := .Custom.Alerts}}
+	            <tr {{if Odd $i}}class="alt"{{end}} align="right">
+	                <td>{{Add $i 1}}</td>
+	                <td align="left">{{$a.CarDevName}}</td>
+	                <td align="left">{{$a.PersMobDevName}}</td>
+	                <td align="left">
+	                    <a href="javascript:void(0);" onclick="deleteAlert({{$a.KeyID}});" title="Delete Alert">Delete</a>
+	                </td>
+	            </tr>
+	        {{end}}
+	    </table>
+	    <script>
+	    function deleteAlert(id) {
+	        if (!window.confirm("Are you sure you want to delete this Alert?")) {
+	        	return;
+	        }
+	        var f = document.getElementById("deleteAlertForm");
+	        f["alertID"].value = id;
+	        f.submit();
+	    }
+	    </script>
+	{{else}}
+	    <div class="warning">You do not have any Alerts. You can add a new Alert below.</div>
+	{{end}}
+	
+	<br />
+	<h3>Add a New Alert</h3>
+	
+	<form id="newAlertForm" action="{{.Page.Path}}" method="POST">
+	    <fieldset>
+	        <legend>New Alert</legend>
+	        <ul>
+	            <li>
+	                <label for="carDeviceIDId">Car GPS Device:</label>
+			        <select id="carDeviceIDId" name="carDeviceID">
+			            <option value=""></option>
+			            {{range .Custom.Devices}}
+			                <option value="{{.KeyID}}">{{.Name}}</option>
+			            {{end}}
+			        </select>
+	                <span class="note">Email alert will be sent if this device goes dark for more than 5 minutes (no reports for more than 5 minutes).</span>
+	            </li>
+	            <li>
+	                <label for="persMobDeviceIDId">Personal Mobile GPS Device:</label>
+	                <select id="persMobDeviceIDId" name="persMobDeviceID">
+	                    <option value=""></option>
+	                    {{range .Custom.Devices}}
+	                        <option value="{{.KeyID}}">{{.Name}}</option>
+	                    {{end}}
+	                </select>
+	                <span class="note">Optional. Email alert will be sent if Car GPS device is moving but not together with this device.</span>
+	            </li>
+	            <li>
+	                <input type="submit" id="submitAddId" name="submitAdd" value="Add" />
+	            </li>
+	        </ul>
+	    </fieldset>
+	</form>
+	
+	<!-- Hidden forms submitted by Javascript: -->
+	
+	<form id="deleteAlertForm" action="{{.Page.Path}}" method="POST" class="hidden">
+	    <input type="hidden" id="delAlertIDId" name="alertID" />
+	    <input type="hidden" id="submitDeleteId" name="submitDelete" value="Delete" />
+	</form>
+
+{{else}}
+    <div class="warning">
+        You do not have any Devices. Please head over to the {{.NamePageMap.Devices.Link}} page to add Devices.
+    </div>
+{{end}}
+
+{{template "footer.html" .}}

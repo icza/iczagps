@@ -1,0 +1,44 @@
+
+-New Device action: Change Logs Retention.
+
+-Add maptype setting?
+    maptype=roadmap default, others: terrain, satellite, hybrid
+    -Also Setting: default zoom level for map location previews
+        -Or maybe it can be just a combo on the Logs page?
+
+
+-Improve mobile browser detection algorithm implemented in Params.isMobile().
+
+-If After filter is not specified, auto-insert the time specified by Logs Retention.
+    -If specified, use the greater one (user-specified and retention-specified), 
+
+-Add a Utils/Calculations page where certain GPS calculations can be done, e.g. distance between 2 geopoints.
+    -This will also be of great marketing value as this could be used without registration!
+    -This must be done right, because if this is wrong, people would lose trust in other parts of the app too!
+    -It should support:
+        -Distance between 2 geopoints.
+
+-Rewrite contents of the err_internal.html template.
+
+-Export GPS logs to CSV
+
+-Proper Help detailing the system, setup, requirements etc.
+
+-Implement device operations: Reorder (move up or down in list).
+
+
+---------------------------------------------
+CONDITIONS FOR FREE, PUBLIC USE:
+
+-Add Device number limit to Account, and enforce it in DevicesLogic.
+    Should be 1 for new/free accounts which can be raised by an admin (maybe when paid).
+
+-Limit min time between gps records for free accounts, e.g. minimum 2 minutes.
+
+-Limit max Logs Retention, e.g. max 30 days (and obviously disallow 0 - forever).
+
+-Cost (per month) can be calculated by:
+    -price A for a device with max 30 days retention, not indexed
+    -price B for a device with max 30 days retention, indexed
+    -price C for a device with "forever" retention, not indexed
+    -price D for a device with "forever" retention, indexed
